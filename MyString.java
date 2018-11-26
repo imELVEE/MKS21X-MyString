@@ -1,4 +1,7 @@
-public class MyString implements CharSequence{
+public class MyString implements CharSequence,Comparable<CharSequence>{
+
+  //CharSequence Methods
+
   private char[] data;
 
   public MyString(CharSequence s){
@@ -23,10 +26,10 @@ public class MyString implements CharSequence{
     }
     catch(IndexOutOfBoundsException e){
       //Tells user what user did wrong
-      System.out.print("Index provided is invalid: Index was " + index + ".");
+      System.out.print("Index provided is invalid: Index was " + index);
     }
-    //return garbage answer
-    return ' ';
+    //return period at the end of the error message
+    return '.';
   }
 
   public int length(){
@@ -53,16 +56,36 @@ public class MyString implements CharSequence{
       //Tells user what user did wrong
       System.out.print("Start and end are invalid:");
       if (start < 0)
-        System.out.print(" Start was " + start + ".");
+        System.out.print(" Start was " + start);
       if (end < 0)
-        System.out.print(" End was " + end + ".");
+        System.out.print(" End was " + end);
       if (end < start)
-        System.out.print(" End was less than start.");
+        System.out.print(" End was less than start");
       if (end > data.length)
-        System.out.print(" End was greater than length of MyString.");
+        System.out.print(" End was greater than length of MyString");
     }
-    //return garbage value if it error occurs
-    return "";
+    //return period at the end of the error message
+    return ".";
   }
+
+//-----------------------------------------------------------------------------------
+
+  //Comparable Methods
+
+  public int compareTo(CharSequence o){
+    int ans = 0;
+    try{
+      //loop through data and o to find correct value and then
+      //change ans to correct value
+    }
+    catch(NullPointerException e){
+      System.out.println("Cannot compare to null.");
+    }
+    catch(ClassCastException r){
+      System.out.println("Cannot compare to non-CharSequence.");
+    }
+    return ans;
+  }
+
 
 }
