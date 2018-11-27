@@ -20,52 +20,44 @@ public class MyString implements CharSequence,Comparable<CharSequence>{
 
 
   public char charAt(int index){
-    try{
-      //Stops charAt if there's no error because return exits charAt
-      return data[index];
-    }
-    catch(IndexOutOfBoundsException e){
+    if (index < 0 || index > data.length){
       //Tells user what user did wrong
-      System.out.print("Index provided is invalid: Index was " + index);
+      throw new IndexOutOfBoundsException("Index provided is invalid: Index was " + index);
     }
-    //return period at the end of the error message
-    return '.';
+
+    return data[index];
   }
 
   public int length(){
     return data.length;
   }
 
-  public CharSequence subSequence(int start, int end){
-    try{
-      //Check to see if the end is invalid, if only end is negative or
-      //smaller than start
-      char endTest = data[end-start];
+  public CharSequence subSequence(int start, int end) throws IndexOutOfBoundsException{
+    //Checks for exceptions
+    if (start < 0 || end < 0 || end < start || end > data.length){
+    String error = "";
+    //Tells user what user did wrong
+    if (start < 0)
+      error += " Start was " + start + ".";
+    if (end < 0)
+      error += " End was " + end + ".";
+    if (end < start)
+      error += " End was less than start.";
+    if (end > data.length)
+      error += " End was greater than length of MyString.";
 
-      //Create the answer
-      String subdata = "";
-      //Loops through the data inbetween start and end
-      //Checks for: if the start is negative or start end > length
-      for (int i = start ; i < end ; i++){
-          subdata += data[i];
-      }
-      //return the subdata and exit the program
-      return subdata;
+    throw new IndexOutOfBoundsException("Start and end are invalid:" + error);
     }
-    catch(IndexOutOfBoundsException e){
-      //Tells user what user did wrong
-      System.out.print("Start and end are invalid:");
-      if (start < 0)
-        System.out.print(" Start was " + start);
-      if (end < 0)
-        System.out.print(" End was " + end);
-      if (end < start)
-        System.out.print(" End was less than start");
-      if (end > data.length)
-        System.out.print(" End was greater than length of MyString");
+
+    //Create the answer
+    String subdata = "";
+    //Loops through the data inbetween start and end
+    for (int i = start ; i < end ; i++){
+        subdata += data[i];
     }
-    //return period at the end of the error message
-    return ".";
+    //return the subdata and exit the program
+    return subdata;
+
   }
 
 //-----------------------------------------------------------------------------------
@@ -73,18 +65,29 @@ public class MyString implements CharSequence,Comparable<CharSequence>{
   //Comparable Methods
 
   public int compareTo(CharSequence o){
-    int ans = 0;
-    try{
-      //loop through data and o to find correct value and then
-      //change ans to correct value
+    if (data == null || o == null){
+      throw new NullPointerException("Cannot compare to null.");
     }
-    catch(NullPointerException e){
-      System.out.println("Cannot compare to null.");
+
+    //loop through data and o to find correct value and then
+    //change ans to correct value
+    for (int i = 0 ; i < Math.min(length(), o.length()) ; i++){
+      if ( (int) charAt(i) < (int) o.charAt(i) ){
+        return -1;
+      }
+      if ( (int) charAt(i) > (int) o.charAt(i) ){
+        return 1;
+      }
     }
-    catch(ClassCastException r){
-      System.out.println("Cannot compare to non-CharSequence.");
+    //the CharSequences have the same characters but different lengths
+    if (length() < o.length()){
+      return -1;
     }
-    return ans;
+    else if (length() > o.length()){
+      return 1;
+    }
+    //the CharSequences have the same characters and length
+    return 0;
   }
 
 
